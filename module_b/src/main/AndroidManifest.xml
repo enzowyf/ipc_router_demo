@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.ezstudio.module_b">
+
+    <application>
+        <activity android:name="com.ezstudio.module_b.ModuleBActivity"
+            android:process=":other">
+        </activity>
+    </application>
+
+</manifest>

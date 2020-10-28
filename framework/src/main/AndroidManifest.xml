@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ezstudio.framework">
+
+    <application>
+        <provider
+            android:name=".MainContentProvider"
+            android:authorities="process_dispatcher_main" />
+
+        <provider
+            android:name=".OtherContentProvider"
+            android:authorities="process_dispatcher_other"
+            android:process=":other"/>
+    </application>
+
+</manifest>
