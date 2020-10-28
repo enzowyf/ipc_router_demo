@@ -9,5 +9,6 @@ import android.os.IInterface;
 public interface IService {
 
     IBinder getBinder();
+
     IInterface getInterface(IBinder binder);
 }

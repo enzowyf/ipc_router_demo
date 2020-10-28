@@ -87,11 +87,7 @@ object ServiceManager {
         return service.getInterface(bundle?.getBinder("binder"))
     }
 
-    private fun invokeMethod(
-        obj: Any,
-        method: Method,
-        args: Array<Any>?
-    ): Any? {
+    private fun invokeMethod(obj: Any, method: Method, args: Array<Any>?): Any? {
         return if (args.isNullOrEmpty()) {
             method.invoke(obj)
         } else {

@@ -4,11 +4,11 @@
 
     <application>
         <provider
-            android:name=".MainContentProvider"
+            android:name=".MainBinderProvider"
             android:authorities="process_dispatcher_main" />
 
         <provider
-            android:name=".OtherContentProvider"
+            android:name=".OtherBinderProvider"
             android:authorities="process_dispatcher_other"
             android:process=":other"/>
     </application>
