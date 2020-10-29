@@ -13,5 +13,5 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface IBinderPool  {
     @NonNull
-    IBinder getBinder(@NonNull Class<? extends IService> clazz);
+    IBinder getBinder(@NonNull String serviceInterfaceName);
 }

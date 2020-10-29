@@ -4,6 +4,7 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import com.ezstudio.framework.servicemanager.IBinderPool
@@ -24,12 +25,22 @@ abstract class AbstractBinderProvider : ContentProvider(),
         return true
     }
 
+    override fun call(method: String, arg: String?, extras: Bundle?): Bundle? {
+        Log.d("---wyf---", "BinderProvider[$this].call:$method $arg $extras")
+
+        val binder = getBinder(arg!!)
+        Log.d("---wyf---", "BinderProvider[$this].call: binder:$binder")
+        return Bundle().apply {
+            putBinder("binder", binder)
+        }
+    }
+
     override fun attach(pool: IBinderPool) {
         binderPool = pool
     }
 
-    fun getBinder(clazz: Class<out IService> ): IBinder {
-        return binderPool.getBinder(clazz)
+    private fun getBinder(serviceInterfaceName: String): IBinder {
+        return binderPool.getBinder(serviceInterfaceName)
     }
 
 
