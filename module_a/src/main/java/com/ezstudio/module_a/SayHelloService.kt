@@ -13,10 +13,10 @@ import com.ezstudio.framework.ISayHelloService
  * Created by enzowei on 06/14/2019.
  */
 class SayHelloService : ISayHelloService, ISayHelloInterface.Stub() {
-    override fun hello() {
+    override fun hello(name: String) {
         Log.d("SayHelloService", "hello at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
 
-        println("Hello world, I am module a.")
+        println("Hello $name, I am module a.")
     }
     override fun helloWorld(name: String): String {
         Log.d("SayHelloService", "helloWorld at process:${Process.myPid()} at Thread:${Thread.currentThread()}")

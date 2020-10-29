@@ -13,7 +13,7 @@ import java.lang.reflect.Proxy
  * Created by enzowei on 10/28/2020.
  */
 object ServiceManager {
-    private val serviceMap = ArrayMap<Class<out IService>, IService>()
+    private val serviceMap = ArrayMap<Class<out IService>, ServiceModel>()
 
     private val processList = mutableListOf<String>()
 
@@ -23,7 +23,7 @@ object ServiceManager {
         binderProvider.attach { clazz ->
             Log.d("ServiceManager", "binderPool getBinder:$clazz $serviceMap")
 
-            serviceMap[clazz]!!.binder
+            serviceMap[clazz]!!.service.binder
         }
     }
 
@@ -32,14 +32,22 @@ object ServiceManager {
     }
 
     fun <T : IService> registerService(clazz: Class<T>, serviceImplement: T) {
-        serviceMap[clazz] = serviceImplement
+        Log.d("ServiceManager", "registerService invoke, $clazz $serviceImplement ${clazz.annotations.any { it is SupportMultiProcess }}")
+
+        serviceMap[clazz] =
+            ServiceModel(serviceImplement, clazz.annotations.any { it is SupportMultiProcess })
     }
 
-    fun <T : IService> getService(serviceClass: Class<T>): T? {
-        return generateProxy(
-            serviceClass,
-            serviceMap[serviceClass] as T
-        )
+    fun <T : IService> getService(serviceClass: Class<T>): T {
+        val serviceModel = serviceMap[serviceClass]!!
+        return if (serviceModel.isSupportMultiProcess) {
+            generateProxy(
+                serviceClass,
+                serviceModel.service as T
+            )
+        } else {
+            serviceModel.service as T
+        }
     }
 
     private fun <T : IService> generateProxy(clazz: Class<T>, service: T): T {
