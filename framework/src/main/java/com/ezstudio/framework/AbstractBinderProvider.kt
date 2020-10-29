@@ -4,34 +4,34 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
-import android.os.IBinder
+import android.os.Bundle
 import android.util.Log
-import com.ezstudio.framework.servicemanager.IBinderPool
+import com.ezstudio.framework.servicemanager.IActionProvider
 import com.ezstudio.framework.servicemanager.IBinderProvider
 import com.ezstudio.framework.servicemanager.ServiceManager
 
 /**
  * Created by enzowei on 10/27/2020.
  */
-abstract class AbstractBinderProvider : ContentProvider(),
-    IBinderProvider {
+abstract class AbstractBinderProvider : ContentProvider(), IBinderProvider {
 
-    private lateinit var binderPool: IBinderPool
+    private lateinit var actionProvider: IActionProvider
 
     override fun onCreate(): Boolean {
         Log.d("---wyf---", "BinderProvider[$this].onCreate")
+
         ServiceManager.attach(this)
         return true
     }
 
-    override fun attach(pool: IBinderPool) {
-        binderPool = pool
+    override fun attach(actionProvider: IActionProvider) {
+        this.actionProvider = actionProvider
     }
 
-    fun getBinder(clazz: Class<out IService> ): IBinder {
-        return binderPool.getBinder(clazz)
+    override fun call(method: String, arg: String?, extras: Bundle?): Bundle? {
+        Log.d("---wyf---", "BinderProvider[$this].call $method $arg $extras")
+        return actionProvider.invoke(method, extras)
     }
-
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         return null

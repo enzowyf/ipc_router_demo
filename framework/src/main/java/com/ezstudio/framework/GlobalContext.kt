@@ -7,4 +7,6 @@ import android.app.Application
  */
 object GlobalContext {
     lateinit var app: Application
+
+    val process = Process()
 }
