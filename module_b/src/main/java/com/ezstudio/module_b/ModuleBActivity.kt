@@ -28,35 +28,37 @@ class ModuleBActivity : AppCompatActivity() {
 
         call_module_a.setOnClickListener {
             Log.d("---wyf---", "[start] call hello at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
-            sayHelloServer.hello("enzo")
-            Log.d("---wyf---", "[end] call hello at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
-
-            Log.d("---wyf---", "[start] call helloWorld at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
-            sayHelloServer.helloWorld("enzo")?.let {
-                Log.d("---wyf---", "[end] call helloWorld at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
+            sayHelloServer.hello("enzo")?.let {
+                Log.d("---wyf---", "[end] call hello at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
                 Toast.makeText(this@ModuleBActivity, it, Toast.LENGTH_LONG).show()
             }
 
-            Log.d("---wyf---", "[start] call getName at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
-            profileServer.name?.let {
-                Log.d("---wyf---", "[end] call getName at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
-
-                Toast.makeText(this@ModuleBActivity, it, Toast.LENGTH_LONG).show()
-            }
-
-            Log.d("---wyf---", "[start] call getPhone at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
-            profileServer.phone?.let {
-                Log.d("---wyf---", "[end] call getPhone at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
-
-                Toast.makeText(this@ModuleBActivity, it, Toast.LENGTH_LONG).show()
-            }
-
-            Log.d("---wyf---", "[start] call getAddress at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
-            addressService.address?.let {
-                Log.d("---wyf---", "[end] call getAddress at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
-
-                Toast.makeText(this@ModuleBActivity, it, Toast.LENGTH_LONG).show()
-            }
+//            Log.d("---wyf---", "[start] call helloWorld at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
+//            sayHelloServer.helloWorld("enzo")?.let {
+//                Log.d("---wyf---", "[end] call helloWorld at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
+//                Toast.makeText(this@ModuleBActivity, it, Toast.LENGTH_LONG).show()
+//            }
+//
+//            Log.d("---wyf---", "[start] call getName at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
+//            profileServer.name?.let {
+//                Log.d("---wyf---", "[end] call getName at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
+//
+//                Toast.makeText(this@ModuleBActivity, it, Toast.LENGTH_LONG).show()
+//            }
+//
+//            Log.d("---wyf---", "[start] call getPhone at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
+//            profileServer.phone?.let {
+//                Log.d("---wyf---", "[end] call getPhone at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
+//
+//                Toast.makeText(this@ModuleBActivity, it, Toast.LENGTH_LONG).show()
+//            }
+//
+//            Log.d("---wyf---", "[start] call getAddress at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
+//            addressService.address?.let {
+//                Log.d("---wyf---", "[end] call getAddress at process:${Process.myPid()} at Thread:${Thread.currentThread()}")
+//
+//                Toast.makeText(this@ModuleBActivity, it, Toast.LENGTH_LONG).show()
+//            }
         }
 
     }

@@ -8,5 +8,5 @@ import android.support.annotation.Nullable;
  * Created by enzowei on 10/29/2020.
  */
 public interface IActionProvider {
-    @Nullable Bundle invoke(@NonNull String method, @Nullable Bundle extras);
+    @Nullable String invoke(@NonNull String method, @Nullable String extras);
 }

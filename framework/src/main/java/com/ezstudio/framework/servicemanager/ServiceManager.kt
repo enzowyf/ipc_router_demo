@@ -1,5 +1,6 @@
 package com.ezstudio.framework.servicemanager
 
+import android.database.CursorIndexOutOfBoundsException
 import android.net.Uri
 import android.os.Bundle
 import android.util.ArrayMap
@@ -23,10 +24,11 @@ object ServiceManager {
         ipcMethodMap["ISayHelloService.hello"] = IPCAction {
             Log.d("ServiceManager", "invokeIPCMethod, ISayHelloService.hello $it")
 
-            val arg = it.getString("arg")
-            (serviceMap[ISayHelloService::class.java]!!.service as ISayHelloService).hello(arg)
+            val result = (serviceMap[ISayHelloService::class.java]!!.service as ISayHelloService).hello(it)
 
-            null
+            Log.d("ServiceManager", "invokeIPCMethod, ISayHelloService.hello $it $result")
+
+            result
         }
         ipcMethodMap["IProfileService.getName"] = IPCAction {
             Log.d("ServiceManager", "invokeIPCMethod, IProfileService.getName $it ")
@@ -35,17 +37,15 @@ object ServiceManager {
 
             Log.d("ServiceManager", "invokeIPCMethod, IProfileService.getName $it $result")
 
-            Bundle().apply {
-                putString("result", result)
-            }
+            result
         }
     }
 
     fun attach(binderProvider: IBinderProvider) {
-        binderProvider.attach { method, extras ->
-            Log.d("ServiceManager", "ActionProvider invoke, $method $extras")
+        binderProvider.attach { method, args ->
+            Log.d("ServiceManager", "ActionProvider invoke, $method $args")
 
-            ipcMethodMap[method]?.invoke(extras)
+            ipcMethodMap[method]?.invoke(args)
         }
     }
 
@@ -99,19 +99,32 @@ object ServiceManager {
         process: String
     ): Any? {
         Log.d("ServiceManager", "invokeIPCMethod")
-        val argBundle = Bundle()
+        var arg = ""
         if (args != null) {
-            argBundle.putString("args", args[0] as? String)
+            arg = args[0] as String
         }
 
-        val resultBundle = GlobalContext.app.contentResolver.call(
-            Uri.parse("content://process_dispatcher_${process}"),
-            "${clazz.simpleName}.${method.name}",
-            null,
-            null
-        )
+        val uri = Uri.parse("content://process_dispatcher_$process?method=${clazz.simpleName}.${method.name}&args=$arg")
+        val cursor = GlobalContext.app.contentResolver.query(uri, null, "", null, "")
+        Log.e("---wyf---", "invokeIPCMethod get cursor:$cursor")
 
-        return resultBundle.getString("result")
+        var result: String? = null
+        cursor?.let {
+            if (it.moveToFirst()) {
+                try {
+                    result = it.getString(0)
+                    Log.e("---wyf---", "invokeIPCMethod get result:$result")
+                } catch (e : CursorIndexOutOfBoundsException) {
+                    Log.e("---wyf---", "error", e)
+                }
+            } else {
+                Log.e("---wyf---", "error", CursorIndexOutOfBoundsException("pos:${it.position} size:${it.count}"))
+
+            }
+
+            it.close()
+        }
+        return result
     }
 
 

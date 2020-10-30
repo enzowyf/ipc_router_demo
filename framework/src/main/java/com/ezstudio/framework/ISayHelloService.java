@@ -8,8 +8,8 @@ import com.ezstudio.framework.servicemanager.SupportMultiProcess;
  */
 @SupportMultiProcess
 public interface ISayHelloService extends IService {
-    @Process(name = "other")
-    void hello(String name);
+    @Process(name = "main")
+    String hello(String name);
 
     String helloWorld(String name);
 }

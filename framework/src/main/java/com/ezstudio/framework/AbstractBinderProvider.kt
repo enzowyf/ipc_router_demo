@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import com.ezstudio.framework.servicemanager.IActionProvider
 import com.ezstudio.framework.servicemanager.IBinderProvider
+import com.ezstudio.framework.servicemanager.IPCCursor
 import com.ezstudio.framework.servicemanager.ServiceManager
 
 /**
@@ -30,7 +31,7 @@ abstract class AbstractBinderProvider : ContentProvider(), IBinderProvider {
 
     override fun call(method: String, arg: String?, extras: Bundle?): Bundle? {
         Log.d("---wyf---", "BinderProvider[$this].call $method $arg $extras")
-        return actionProvider.invoke(method, extras)
+        return null//actionProvider.invoke(method, extras)
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
@@ -44,7 +45,12 @@ abstract class AbstractBinderProvider : ContentProvider(), IBinderProvider {
         selectionArgs: Array<String>?,
         sortOrder: String?
     ): Cursor? {
-        return null
+        Log.d("---wyf---", "BinderProvider[$this].query $uri $projection $selection $selectionArgs $sortOrder")
+
+        val method = uri.getQueryParameter("method")
+        val args = uri.getQueryParameter("args")
+
+        return IPCCursor(actionProvider.invoke(method, args))
     }
 
     override fun update(

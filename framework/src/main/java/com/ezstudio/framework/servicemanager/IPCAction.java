@@ -6,5 +6,5 @@ import android.os.Bundle;
  * Created by enzowei on 10/29/2020.
  */
 public interface IPCAction {
-    Bundle invoke(Bundle args);
+    String invoke(String args);
 }

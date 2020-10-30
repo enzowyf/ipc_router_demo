@@ -9,7 +9,7 @@ import com.ezstudio.framework.servicemanager.SupportMultiProcess;
 @SupportMultiProcess
 public interface IProfileService extends IService {
 
-    @Process(name = "main")
+    @Process(name = "other")
     String getName();
 
     String getPhone();
